@@ -1,0 +1,195 @@
+Table Users {
+  id string [pk]
+  username string
+  passwordHashed string
+  contactId string [ref: - ContactInfo.id]
+  createdAt timestamp
+  updatedAt timestamp
+  updatedBy string
+}
+
+Table Products {
+  id string [pk]
+  name string
+  description string
+  price float
+  categoryId string [ref: > Categories.id]
+  supplierId string [ref: > Suppliers.id]
+  createdAt timestamp
+  updatedAt timestamp
+  updatedBy string
+}
+
+Table OrderProducts {
+    id string [pk]
+    orderId string [ref: > Orders.id]
+    productId string [ref: > Products.id]
+}
+Table Orders {
+    id string [pk]
+    userId string [ref: > Users.id]
+    statusId string [ref: - OrderStatuses.id]
+    createdAt timestamp
+    updatedAt timestamp
+    updatedBy string
+}
+
+Table Categories {
+    id string [pk]
+    name string
+    description string
+    createdAt timestamp
+    updatedAt timestamp
+    updatedBy string
+}
+
+Table Reviews {
+    id string [pk]
+    productId string [ref: > Products.id]
+    userId string
+    rating int
+    comment string
+    createdAt timestamp
+}
+
+Table Carts {
+    id string [pk]
+    // one to one relationship with user
+    userId string [ref: - Users.id]
+    productId string
+    quantity int
+    createdAt timestamp
+    updatedAt timestamp
+}
+
+Table Addresses {
+    id string [pk]
+    // one to many
+    userId string [ref: > Users.id]
+    street string
+    city string
+    zipCode string
+    country string
+    createdAt timestamp
+    updatedAt timestamp
+    updatedBy string
+}
+
+
+Table Payments {
+    id string [pk]
+    // one to one:
+    orderId string [ref: - Orders.id]
+    amount float
+    paymentMethod string
+    createdAt timestamp
+}
+
+Table Discounts {
+    id string [pk]
+    // one to many
+    productId string [ref: > Products.id]
+    discountPercent int
+    startDate timestamp
+    endDate timestamp
+    createdAt timestamp
+    updatedAt timestamp
+    updatedBy string
+}
+
+Table Shipping {
+    id string [pk]
+    orderId string [ref: - Orders.id]
+    addressId string
+    deliveryDate timestamp
+    sendDate timestamp
+    createdAt timestamp
+    updatedAt timestamp
+}
+
+Table OrderStatuses {
+    id string [pk]
+    name string
+    description string
+    createdAt timestamp
+}
+
+Table Suppliers {
+    id string [pk]
+    name string
+    description string
+    contactId string [ref: <> ContactInfo.id]
+    createdAt timestamp
+    updatedAt timestamp
+    updatedBy string
+}
+
+Table ProductsSuppliers {
+  id string [pk]
+  productId string [ref: > Products.id]
+  supplierId string [ref: > Suppliers.id]
+}
+
+Table ContactInfo {
+    id string [pk]
+    email string
+    phone string
+    note string
+    createdAt timestamp
+    updatedAt timestamp
+    updatedBy string
+}
+
+Table Warehouses {
+    id string [pk]
+    name string
+    addressId string [ref: - Addresses.id]
+    createdAt timestamp
+    updatedAt timestamp
+    updatedBy string
+}
+
+Table PriceHistory {
+    id string [pk]
+    productId string [ref: > Products.id]
+    oldPrice float
+    newPrice float
+    changeDate timestamp
+    createdAt timestamp
+    updatedAt timestamp
+    updatedBy string
+}
+
+Table OrderHistory {
+    id string [pk]
+    orderId string [ref: < Orders.id]
+    oldStatusId string
+    newStatusId string
+    createdAt timestamp
+    updatedAt timestamp
+    updatedBy string
+}
+
+/*
+Тригери:
+
+Тригер на оновлення статусу замовлення, який відправляє сповіщення користувачеві.
+Тригер на зміну ціни товару, який оновлює історію цін.
+Тригер на додавання відгука, який оновлює середній рейтинг товару.
+
+
+
+Збережені Процедури:
+
+Процедура для розрахунку загальної вартості замовлення з урахуванням знижок.
+Процедура для створення нового замовлення.
+Процедура для оновлення статусу замовлення.
+
+
+
+Функції:
+
+Функція для отримання кількості доступних товарів на складі.
+Функція для розрахунку вартості доставки на основі відстані та ваги товару.
+Функція для отримання інформації про користувача за його ID.
+*/
