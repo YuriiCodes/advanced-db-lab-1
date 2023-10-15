@@ -12,9 +12,9 @@ async function runSqlFile(filePath: string): Promise<void> {
     await prisma.$queryRawUnsafe(sql);
 }
 
-async function loadAndRunSqlFunctions(): Promise<void> {
+async function loadAndRunSqlViaDirectory(dir: string): Promise<void> {
     // Path to the functions directory
-    const sqlFunctionsDir = path.join(__dirname, '../rawSql/functions');
+    const sqlFunctionsDir = path.join(__dirname, dir);
 
     // Read all files from the directory
     const files = fs.readdirSync(sqlFunctionsDir);
@@ -23,10 +23,20 @@ async function loadAndRunSqlFunctions(): Promise<void> {
         const filePath = path.join(sqlFunctionsDir, file);
         // Check if it's a file and has a .sql extension
         if (fs.statSync(filePath).isFile() && path.extname(filePath) === '.sql') {
+            console.log(`Running ${filePath}`)
             await runSqlFile(filePath);
         }
     }
 }
+const loadAndRunSqlFunctions = async () => {
+    console.log("Loading and running SQL functions")
+    return await loadAndRunSqlViaDirectory("../rawSql/functions");
+}
+const loadAndRunSqlProcedures = async () => {
+    console.log("Loading and running SQL procedures")
+    return await loadAndRunSqlViaDirectory("../rawSql/procedures");
+}
+
 
 async function main() {
     const contactInfo1 = await prisma.contactInfo.create({
@@ -365,6 +375,7 @@ async function main() {
     });
 
     await loadAndRunSqlFunctions();
+    await loadAndRunSqlProcedures();
 
 }
 
