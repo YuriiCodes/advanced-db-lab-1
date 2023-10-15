@@ -37,6 +37,11 @@ const loadAndRunSqlProcedures = async () => {
     return await loadAndRunSqlViaDirectory("../rawSql/procedures");
 }
 
+const loadAndRunSqlTriggers = async () => {
+    console.log("Loading and running SQL triggers")
+    return await loadAndRunSqlViaDirectory("../rawSql/triggers");
+}
+
 
 async function main() {
     const contactInfo1 = await prisma.contactInfo.create({
