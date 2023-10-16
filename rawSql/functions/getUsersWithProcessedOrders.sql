@@ -7,3 +7,4 @@ BEGIN
         WHERE o."statusId" IN (SELECT id FROM "OrderStatus" WHERE name = 'Processed');
 END;
 $$ LANGUAGE plpgsql;
+-- SELECT * FROM get_users_with_processed_orders();

@@ -1,3 +1,4 @@
+
 CREATE OR REPLACE FUNCTION updateProductPrice(
     productId TEXT,
     newPrice DOUBLE PRECISION,
@@ -23,5 +24,5 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
--- SELECT UpdateProductPrice('438d4b77-ac15-480d-bfff-70f62abdeb81', 1300, 'admin');
+-- SELECT UpdateProductPrice('72ca372a-b1f7-4c8e-9e13-753e4d4d1816', 1000, 'demoForLesson');
 

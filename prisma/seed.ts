@@ -381,6 +381,7 @@ async function main() {
 
     await loadAndRunSqlFunctions();
     await loadAndRunSqlProcedures();
+    await loadAndRunSqlTriggers();
 
 }
 
